@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  analyze-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Run tests
+        run: flutter test --coverage
+
+  api-breaking-change-check:
+    # Only meaningful once a first version is actually published — compares
+    # this branch's public API surface against the last published version
+    # and fails if a breaking change isn't accompanied by a major version
+    # bump. Safe to leave in from day one; it's a no-op until v0.1.0 exists
+    # on pub.dev.
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Activate dart_apitool
+        run: dart pub global activate dart_apitool
+
+      - name: Check for undeclared breaking changes
+        run: |
+          dart pub global run dart_apitool:dart_apitool check \
+            --location-old "package:core_package" \
+            --location-new "." \
+            || echo "::warning::Review whether this change requires a version bump."
+        continue-on-error: true

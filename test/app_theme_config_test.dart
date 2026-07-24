@@ -26,7 +26,8 @@ void main() {
       expect(theme.colorScheme.surface, config.darkSurface);
     });
 
-    test('brand colors (primary/secondary/error) stay the same across modes', () {
+    test('brand colors (primary/secondary/error) stay the same across modes',
+        () {
       final light = config.toThemeData();
       final dark = config.toThemeData(brightness: Brightness.dark);
       expect(light.colorScheme.primary, dark.colorScheme.primary);

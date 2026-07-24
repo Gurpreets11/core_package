@@ -43,7 +43,8 @@ abstract final class AppLogger {
     Object? error,
     StackTrace? stackTrace,
   }) =>
-      _log(LogLevel.error, message, tag: tag, error: error, stackTrace: stackTrace);
+      _log(LogLevel.error, message,
+          tag: tag, error: error, stackTrace: stackTrace);
 
   static void _log(
     LogLevel level,

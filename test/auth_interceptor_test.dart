@@ -5,7 +5,8 @@ import 'package:http_mock_adapter/http_mock_adapter.dart';
 
 void main() {
   group('AuthInterceptor', () {
-    test('injects the Authorization header when a token is available', () async {
+    test('injects the Authorization header when a token is available',
+        () async {
       final dio = Dio(BaseOptions(baseUrl: 'https://api.example.com'));
       final dioAdapter = DioAdapter(dio: dio);
 

@@ -37,5 +37,6 @@ class AppThemeScope extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(AppThemeScope oldWidget) => config != oldWidget.config;
+  bool updateShouldNotify(AppThemeScope oldWidget) =>
+      config != oldWidget.config;
 }

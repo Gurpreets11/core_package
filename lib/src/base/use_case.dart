@@ -27,5 +27,5 @@ final class NoParams {
 /// ```
 abstract class UseCase<T, Params> {
   /// Executes the use case with the given [params].
-  Future<Result<Type>> call(Params params);
+  Future<Result<T>> call(Params params);
 }

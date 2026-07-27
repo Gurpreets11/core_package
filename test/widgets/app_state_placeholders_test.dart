@@ -20,7 +20,8 @@ void main() {
       expect(find.text('New leads will show up here.'), findsOneWidget);
     });
 
-    testWidgets('shows an action button only when both label and '
+    testWidgets(
+        'shows an action button only when both label and '
         'callback are provided', (tester) async {
       var tapped = false;
       await tester.pumpWidget(

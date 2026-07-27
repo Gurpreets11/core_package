@@ -51,7 +51,8 @@ class AppEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 48, color: config.onSurface.withOpacity(0.4)),
+            Icon(icon,
+                size: 48, color: config.onSurface.withValues(alpha: 0.4)),
             SizedBox(height: config.spacing.md),
             Text(
               title,
@@ -63,7 +64,7 @@ class AppEmptyState extends StatelessWidget {
               Text(
                 message!,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: config.onSurface.withOpacity(0.6),
+                      color: config.onSurface.withValues(alpha: 0.6),
                     ),
                 textAlign: TextAlign.center,
               ),
@@ -135,7 +136,7 @@ class AppErrorState extends StatelessWidget {
             Text(
               message,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: config.onSurface.withOpacity(0.6),
+                    color: config.onSurface.withValues(alpha: 0.6),
                   ),
               textAlign: TextAlign.center,
             ),

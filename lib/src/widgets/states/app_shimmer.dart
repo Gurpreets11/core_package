@@ -60,8 +60,8 @@ class _AppShimmerState extends State<AppShimmer>
   @override
   Widget build(BuildContext context) {
     final config = AppThemeScope.of(context);
-    final base = config.onSurface.withOpacity(0.08);
-    final highlight = config.onSurface.withOpacity(0.16);
+    final base = config.onSurface.withValues(alpha: 0.08);
+    final highlight = config.onSurface.withValues(alpha: 0.16);
 
     return AnimatedBuilder(
       animation: _controller,

@@ -53,7 +53,7 @@ class AppDropdownField<T> extends StatelessWidget {
     final config = AppThemeScope.of(context);
 
     return DropdownButtonFormField<T>(
-      value: value,
+      initialValue: value,
       onChanged: enabled ? onChanged : null,
       validator: validator,
       decoration: InputDecoration(

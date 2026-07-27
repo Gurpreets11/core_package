@@ -91,7 +91,7 @@ class AppRadioGroup<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final config = AppThemeScope.of(context);
 
-    return Column(
+    /*return Column(
       mainAxisSize: MainAxisSize.min,
       children: options
           .map(
@@ -105,6 +105,24 @@ class AppRadioGroup<T> extends StatelessWidget {
             ),
           )
           .toList(),
+    );*/
+
+    return RadioGroup<T>(
+      groupValue: value,
+      onChanged: onChanged,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: options
+            .map(
+              (option) => RadioListTile<T>(
+                value: option,
+                activeColor: config.primary,
+                title: Text(optionLabel(option)),
+                contentPadding: EdgeInsets.zero,
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }

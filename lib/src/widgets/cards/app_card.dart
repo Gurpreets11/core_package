@@ -114,15 +114,13 @@ class AppChip extends StatelessWidget {
       ),
     );
 
-    return onTap != null
-        ? GestureDetector(onTap: onTap, child: chip)
-        : chip;
+    return onTap != null ? GestureDetector(onTap: onTap, child: chip) : chip;
   }
 
   static (Color, Color) _colorsFor(AppStatusTone tone, AppThemeConfig config) {
     return switch (tone) {
       AppStatusTone.neutral => (
-          config.onSurface.withOpacity(0.08),
+          config.onSurface.withValues(alpha: 0.08),
           config.onSurface,
         ),
       AppStatusTone.success => (
@@ -133,7 +131,10 @@ class AppChip extends StatelessWidget {
           const Color(0xFFFFF4E5),
           const Color(0xFF9A6700),
         ),
-      AppStatusTone.danger => (config.error.withOpacity(0.1), config.error),
+      AppStatusTone.danger => (
+          config.error.withValues(alpha: 0.1),
+          config.error
+        ),
     };
   }
 }

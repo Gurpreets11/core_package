@@ -30,3 +30,26 @@ export 'src/theme/app_theme_scope.dart';
 
 // Validation.
 export 'src/validators/validators.dart';
+
+// Widgets — buttons.
+export 'src/widgets/buttons/app_button.dart';
+
+// Widgets — cards, chips, badges.
+export 'src/widgets/cards/app_card.dart';
+
+// Widgets — dialogs & bottom sheets.
+export 'src/widgets/dialogs/app_dialogs.dart';
+
+// Widgets — form fields.
+export 'src/widgets/form_fields/app_date_field.dart';
+export 'src/widgets/form_fields/app_dropdown_field.dart';
+export 'src/widgets/form_fields/app_selection_fields.dart';
+export 'src/widgets/form_fields/app_text_field.dart';
+
+// Widgets — navigation.
+export 'src/widgets/navigation/app_common_bar.dart';
+export 'src/widgets/navigation/app_navigation_drawer.dart';
+
+// Widgets — empty/error/loading states.
+export 'src/widgets/states/app_shimmer.dart';
+export 'src/widgets/states/app_state_placeholders.dart';

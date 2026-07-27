@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final config = AppThemeConfig(
+  final config = const AppThemeConfig(
     primary: const Color(0xFF112233),
     secondary: const Color(0xFF445566),
     background: const Color(0xFFFFFFFF),

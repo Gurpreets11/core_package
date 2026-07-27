@@ -43,8 +43,8 @@ class CacheException extends AppException {
 /// Thrown when the current session/token is invalid or expired.
 class UnauthorizedException extends AppException {
   /// Creates an [UnauthorizedException].
-  const UnauthorizedException([String message = 'Session expired.'])
-      : super(message, statusCode: 401);
+  const UnauthorizedException([super.message = 'Session expired.'])
+      : super(statusCode: 401);
 }
 
 /// Thrown for any exception that doesn't map to a known category.

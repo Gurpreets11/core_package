@@ -19,10 +19,13 @@ sealed class Result<T> {
   const Result();
 
   /// Creates a successful [Result] wrapping [value].
-  factory Result.success(T value) = Success<T>;
+  const factory Result.success(T value) = Success<T>;
 
   /// Creates a failed [Result] wrapping [failure].
-  factory Result.failure(Failure failure) = Failed<T>;
+  const factory Result.failure(Failure failure) = Failed<T>;
+
+
+
 
   /// Returns `true` if this is a [Success].
   bool get isSuccess => this is Success<T>;

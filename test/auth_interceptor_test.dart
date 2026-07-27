@@ -17,6 +17,12 @@ void main() {
       );
 
       dio.interceptors.add(
+        AuthInterceptor(
+          getToken: () async => 'abc123',
+          onUnauthorized: () async {},
+        ),
+      );
+      dio.interceptors.add(
         InterceptorsWrapper(
           onRequest: (options, handler) {
             capturedHeader = options.headers['Authorization'] as String?;
@@ -24,12 +30,7 @@ void main() {
           },
         ),
       );
-      dio.interceptors.add(
-        AuthInterceptor(
-          getToken: () async => 'abc123',
-          onUnauthorized: () async {},
-        ),
-      );
+
 
       await dio.get<dynamic>('/me');
       expect(capturedHeader, 'Bearer abc123');

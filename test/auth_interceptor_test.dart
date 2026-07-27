@@ -31,7 +31,6 @@ void main() {
         ),
       );
 
-
       await dio.get<dynamic>('/me');
       expect(capturedHeader, 'Bearer abc123');
     });

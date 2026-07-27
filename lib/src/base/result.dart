@@ -24,9 +24,6 @@ sealed class Result<T> {
   /// Creates a failed [Result] wrapping [failure].
   const factory Result.failure(Failure failure) = Failed<T>;
 
-
-
-
   /// Returns `true` if this is a [Success].
   bool get isSuccess => this is Success<T>;
 

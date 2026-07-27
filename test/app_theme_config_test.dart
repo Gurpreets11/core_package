@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final config = const AppThemeConfig(
-    primary: const Color(0xFF112233),
-    secondary: const Color(0xFF445566),
-    background: const Color(0xFFFFFFFF),
-    surface: const Color(0xFFF0F0F0),
-    error: const Color(0xFFAA0000),
+  const config = AppThemeConfig(
+    primary: Color(0xFF112233),
+    secondary: Color(0xFF445566),
+    background: Color(0xFFFFFFFF),
+    surface: Color(0xFFF0F0F0),
+    error: Color(0xFFAA0000),
   );
 
   group('AppThemeConfig.toThemeData', () {

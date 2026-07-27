@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Result.when', () {
     test('calls onSuccess for a Success', () {
-      final Result<int> result = Result.success(2);
+      const Result<int> result = Result.success(2);
       final output = result.when(
         onSuccess: (value) => 'value: $value',
         onFailure: (failure) => 'failure',
@@ -13,7 +13,7 @@ void main() {
     });
 
     test('calls onFailure for a Failed', () {
-      final Result<int> result = Result<int>.failure(const ServerFailure());
+      const Result<int> result = Result<int>.failure(ServerFailure());
       final output = result.when(
         onSuccess: (value) => 'value',
         onFailure: (failure) => 'failure: ${failure.message}',
@@ -24,7 +24,7 @@ void main() {
 
   group('Result.map', () {
     test('transforms a successful value', () {
-      final Result<int> result = Result.success(2);
+      const Result<int> result = Result.success(2);
       final mapped = result.map((value) => value * 10);
       expect(mapped, isA<Success<int>>());
       expect((mapped as Success<int>).value, 20);
@@ -32,7 +32,7 @@ void main() {
 
     test('passes a failure through unchanged', () {
       const failure = ServerFailure('boom');
-      final Result<int> result = Result<int>.failure(failure);
+      const Result<int> result = Result<int>.failure(failure);
       final mapped = result.map((value) => value * 10);
       expect(mapped, isA<Failed<int>>());
       expect((mapped as Failed<int>).failure, failure);
@@ -41,7 +41,7 @@ void main() {
 
   group('Result.flatMap', () {
     test('chains a successful result into another Result', () {
-      final Result<int> result = Result.success(2);
+      const Result<int> result = Result.success(2);
       final chained = result.flatMap((value) => Result.success(value + 1));
       expect(chained, isA<Success<int>>());
       expect((chained as Success<int>).value, 3);
@@ -49,7 +49,7 @@ void main() {
 
     test('short-circuits on failure without calling transform', () {
       var called = false;
-      final Result<int> result = Result<int>.failure(const NetworkFailure());
+      const Result<int> result = Result<int>.failure(NetworkFailure());
       final chained = result.flatMap((value) {
         called = true;
         return Result.success(value + 1);
@@ -61,18 +61,18 @@ void main() {
 
   group('Result.getOrElse / valueOrNull / failureOrNull', () {
     test('getOrElse returns the value for Success', () {
-      final Result<int> result = Result.success(5);
+      const Result<int> result = Result.success(5);
       expect(result.getOrElse((_) => -1), 5);
     });
 
     test('getOrElse returns the fallback for Failed', () {
-      final Result<int> result = Result<int>.failure(const CacheFailure());
+      const Result<int> result = Result<int>.failure(CacheFailure());
       expect(result.getOrElse((_) => -1), -1);
     });
 
     test('valueOrNull / failureOrNull reflect the correct branch', () {
-      final Result<int> success = Result.success(1);
-      final Result<int> failure = Result<int>.failure(const UnknownFailure());
+      const Result<int> success = Result.success(1);
+      const Result<int> failure = Result<int>.failure(UnknownFailure());
 
       expect(success.valueOrNull, 1);
       expect(success.failureOrNull, isNull);

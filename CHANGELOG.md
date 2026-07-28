@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+- **Utils**: `AppFormatters` (date, friendly/relative date, currency, number, compact number — via `intl`), `Debouncer`, `AppStringX`/`AppContextX` extensions, and `PaginationController` (infinite-scroll state machine, testable without a real attached `Scrollable`).
+- **Widgets**: `AppSnackbar` (success/error/warning/neutral toasts), `AppSearchField` (debounced, with a clear button), `AppBottomNavBar`, `AppPaginatedListView` (pull-to-refresh + infinite scroll + shimmer first-load state + empty state, built on `PaginationController`).
+- **Testing**: added coverage for `Debouncer`, the string/context extensions, `PaginationController`'s full state machine, `AppFormatters`, and widget tests for `AppSnackbar`, `AppSearchField`, `AppBottomNavBar`, and `AppPaginatedListView`.
+
 ## 0.3.0
 
 - **Storage**: `SecureStorageService` interface + `SecureStorageServiceImpl` (backed by `flutter_secure_storage`), so consuming apps depend on an abstraction instead of the plugin directly — makes anything built on it (e.g. an auth data source) unit-testable with a fake, no platform channel needed.

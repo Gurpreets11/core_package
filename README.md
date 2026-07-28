@@ -11,7 +11,7 @@ the same network layer, error handling, and design-token-driven theming.
 
 ## Status
 
-🚧 Early development (`0.3.0`) — API may still change before a `1.0.0`
+🚧 Early development (`0.4.0`) — API may still change before a `1.0.0`
 release. Currently distributed via GitHub; will move to
 [pub.dev](https://pub.dev) once the API is stable.
 
@@ -50,6 +50,9 @@ dependencies:
   with its own enums so that package's types never leak out) and
   `PermissionFlow.ensureGranted` — a ready-made check → rationale →
   request → "open Settings" flow.
+- **Utils** — `AppFormatters` (date, relative date, currency, number,
+  compact number), `Debouncer`, `AppStringX`/`AppContextX` extensions, and
+  `PaginationController` (infinite-scroll state machine).
 - **Validation** — composable `Validators` (email, phone, password,
   required, min/max length, matches).
 - **Theming** — `AppThemeConfig`, a design-token contract with **built-in
@@ -58,9 +61,10 @@ dependencies:
   exclusively from this, so each app can be branded differently without
   touching this package's code. `AppThemeScope` exposes it via
   `InheritedWidget`.
-- **Widgets** — buttons, form fields, cards/chips/badges, dialogs/action
-  sheets, empty/error/shimmer-loading states, a common app bar, and a
-  navigation drawer — see `lib/src/widgets/`.
+- **Widgets** — buttons, form fields (including a debounced search
+  field), cards/chips/badges, dialogs/action sheets, snackbars, empty/
+  error/shimmer-loading/paginated-list states, a common app bar, a
+  navigation drawer, and a bottom nav bar — see `lib/src/widgets/`.
 - **Base classes** — `UseCase<T, Params>` and a `Repository` marker
   interface for Clean Architecture layering.
 

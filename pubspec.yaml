@@ -1,12 +1,13 @@
 name: core_package
 description: >
   A reusable Flutter foundation package providing networking, error handling,
-  logging, validation, a configurable theming contract, and base architecture
-  classes for Clean Architecture apps.
-version: 0.1.0
-homepage: https://github.com/Gurpreets11/core-package
-repository: https://github.com/Gurpreets11/core-package
-issue_tracker: https://github.com/Gurpreets11/core-package/issues
+  logging, storage, connectivity, permissions, validation, a configurable
+  theming contract, and base architecture classes for Clean Architecture
+  apps.
+version: 0.4.0
+homepage: https://github.com/your-org/core-package
+repository: https://github.com/your-org/core-package
+issue_tracker: https://github.com/your-org/core-package/issues
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -20,6 +21,7 @@ dependencies:
   connectivity_plus: ^6.0.5
   flutter_secure_storage: ^9.2.2
   permission_handler: ^11.3.1
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

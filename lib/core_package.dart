@@ -8,6 +8,10 @@ export 'src/base/repository.dart';
 export 'src/base/result.dart';
 export 'src/base/use_case.dart';
 
+// Connectivity.
+export 'src/connectivity/connectivity_service.dart';
+export 'src/connectivity/connectivity_service_impl.dart';
+
 // Exceptions & failures.
 export 'src/exceptions/app_exception.dart';
 export 'src/exceptions/exception_mapper.dart';
@@ -22,6 +26,15 @@ export 'src/network/api_response.dart';
 export 'src/network/interceptors/auth_interceptor.dart';
 export 'src/network/interceptors/logging_interceptor.dart';
 export 'src/network/interceptors/retry_interceptor.dart';
+
+// Permissions.
+export 'src/permissions/permission_flow.dart';
+export 'src/permissions/permission_service.dart';
+export 'src/permissions/permission_service_impl.dart';
+
+// Storage.
+export 'src/storage/secure_storage_service.dart';
+export 'src/storage/secure_storage_service_impl.dart';
 
 // Theming.
 export 'src/theme/app_spacing.dart';
@@ -50,6 +63,7 @@ export 'src/widgets/form_fields/app_text_field.dart';
 export 'src/widgets/navigation/app_common_bar.dart';
 export 'src/widgets/navigation/app_navigation_drawer.dart';
 
-// Widgets — empty/error/loading states.
+// Widgets — empty/error/loading/connectivity states.
+export 'src/widgets/states/app_connectivity_banner.dart';
 export 'src/widgets/states/app_shimmer.dart';
 export 'src/widgets/states/app_state_placeholders.dart';

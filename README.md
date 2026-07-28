@@ -11,7 +11,7 @@ the same network layer, error handling, and design-token-driven theming.
 
 ## Status
 
-🚧 Early development (`0.1.0`) — API may still change before a `1.0.0`
+🚧 Early development (`0.3.0`) — API may still change before a `1.0.0`
 release. Currently distributed via GitHub; will move to
 [pub.dev](https://pub.dev) once the API is stable.
 
@@ -25,7 +25,7 @@ dependencies:
       ref: main
 ```
 
-## What's included (Phase 1)
+## What's included
 
 - **Networking** — `ApiClient`, a Dio wrapper with **typed** generic methods
   (`get<T>`, `post<T>`, ...) that take a `fromJson` mapper and return a
@@ -38,16 +38,30 @@ dependencies:
   without nested boilerplate.
 - **Errors** — an `AppException` hierarchy (data layer) mapped via
   `ExceptionMapper` to a `Failure` hierarchy (domain/presentation layer).
-- **Logging** — `AppLogger`, silent in release builds.
+- **Logging** — `AppLogger`, with console output silent in release builds
+  and an optional `attachSink` hook so a crash-reporting service (once you
+  add one) receives every log entry in every build mode.
+- **Storage** — `SecureStorageService` (+ real `flutter_secure_storage`
+  impl), so anything built on top is testable against a fake instead of a
+  platform channel.
+- **Connectivity** — `ConnectivityService` (+ real `connectivity_plus`
+  impl) and `AppConnectivityBanner`, a themed offline banner.
+- **Permissions** — `PermissionService` (+ real `permission_handler` impl,
+  with its own enums so that package's types never leak out) and
+  `PermissionFlow.ensureGranted` — a ready-made check → rationale →
+  request → "open Settings" flow.
 - **Validation** — composable `Validators` (email, phone, password,
   required, min/max length, matches).
 - **Theming** — `AppThemeConfig`, a design-token contract with **built-in
   light/dark mode support**, a wired-up `TextTheme`, and a named
-  `AppSpacing` scale (`xs`/`sm`/`md`/`lg`/`xl`). Shared widgets (added in
-  Phase 2) will read exclusively from this, so each app can be branded
-  differently without touching this package's code. `AppThemeScope`
-  exposes it via `InheritedWidget`.
-- **Base classes** — `UseCase<Type, Params>` and a `Repository` marker
+  `AppSpacing` scale (`xs`/`sm`/`md`/`lg`/`xl`). Shared widgets read
+  exclusively from this, so each app can be branded differently without
+  touching this package's code. `AppThemeScope` exposes it via
+  `InheritedWidget`.
+- **Widgets** — buttons, form fields, cards/chips/badges, dialogs/action
+  sheets, empty/error/shimmer-loading states, a common app bar, and a
+  navigation drawer — see `lib/src/widgets/`.
+- **Base classes** — `UseCase<T, Params>` and a `Repository` marker
   interface for Clean Architecture layering.
 
 ## Quick start

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+- **Buttons**: `AppButton` gains a `gradient` variant (custom or default primary→secondary gradient, built via a hand-rolled `Material`+`InkWell` since `ElevatedButton` has no native gradient support) plus `backgroundColor`/`foregroundColor` overrides for one-off custom-color buttons that don't fit the theme's two brand colors.
+- **New widget**: `AppLoadingSpinner` — a themed circular spinner with a visible background track ring (default/`.small`/`.large` size presets), now also used internally by `AppButton`'s loading state instead of a bare `CircularProgressIndicator`.
+- **New widget**: `AppDropdownTrigger` — a compact "Sort by ▾" / "Status ▾" style trigger button with an arrow that animates open/closed automatically around the `Future` returned by its `onTap`, no external open/close state needed.
+- **Testing**: added coverage for the gradient variant, custom color overrides, `AppLoadingSpinner`'s size presets, and `AppDropdownTrigger`'s tap handling and arrow animation.
+
 ## 0.4.0
 
 - **Utils**: `AppFormatters` (date, friendly/relative date, currency, number, compact number — via `intl`), `Debouncer`, `AppStringX`/`AppContextX` extensions, and `PaginationController` (infinite-scroll state machine, testable without a real attached `Scrollable`).

@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_theme_config.dart';
 import '../../theme/app_theme_scope.dart';
+import 'app_loading_spinner.dart';
 
 /// The visual style of an [AppButton].
 enum AppButtonVariant {
-  /// A filled, high-emphasis button using the theme's primary color.
+  /// A filled, high-emphasis button using the theme's primary color
+  /// (or [AppButton.backgroundColor], if set).
   primary,
 
-  /// A filled, medium-emphasis button using the theme's secondary color.
+  /// A filled, medium-emphasis button using the theme's secondary
+  /// color (or [AppButton.backgroundColor], if set).
   secondary,
 
   /// A low-emphasis, text-only button.
@@ -16,17 +19,41 @@ enum AppButtonVariant {
 
   /// An outlined, medium-emphasis button.
   outlined,
+
+  /// A filled button with a gradient background — see
+  /// [AppButton.gradient].
+  gradient,
 }
 
-/// A themed button consuming [AppThemeScope] — never a hardcoded color —
-/// with a built-in loading state so screens don't need to hand-roll a
-/// spinner-vs-label swap every time.
+/// A themed button consuming [AppThemeScope] by default — but with
+/// explicit escape hatches ([backgroundColor], [foregroundColor],
+/// [gradient]) for the one-off button that doesn't fit the theme's two
+/// brand colors — with a built-in loading state so screens don't need
+/// to hand-roll a spinner-vs-label swap every time.
 ///
 /// ```dart
+/// // Theme-driven (the common case):
 /// AppButton(
 ///   label: 'Sign in',
 ///   isLoading: authState.isLoading,
 ///   onPressed: () => controller.login(),
+/// )
+///
+/// // A one-off custom color:
+/// AppButton(
+///   label: 'Add to cart',
+///   backgroundColor: Colors.deepOrange,
+///   onPressed: addToCart,
+/// )
+///
+/// // A gradient CTA:
+/// AppButton(
+///   label: 'Upgrade to Pro',
+///   variant: AppButtonVariant.gradient,
+///   gradient: const LinearGradient(
+///     colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+///   ),
+///   onPressed: upgrade,
 /// )
 /// ```
 class AppButton extends StatelessWidget {
@@ -38,6 +65,9 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.icon,
     this.expand = true,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.gradient,
     super.key,
   });
 
@@ -63,22 +93,28 @@ class AppButton extends StatelessWidget {
   /// `true`, matching common form/CTA layouts.
   final bool expand;
 
+  /// Overrides the theme's color for [AppButtonVariant.primary]/
+  /// [AppButtonVariant.secondary]. Has no effect on [.outlined]/[.text]
+  /// (use [foregroundColor] for those) or [.gradient] (use [gradient]).
+  final Color? backgroundColor;
+
+  /// Overrides the default foreground (label/icon/spinner) color for
+  /// any variant.
+  final Color? foregroundColor;
+
+  /// The gradient to use when [variant] is [AppButtonVariant.gradient].
+  /// Defaults to a primary→secondary gradient from the current theme
+  /// if omitted. Ignored for every other variant.
+  final Gradient? gradient;
+
   @override
   Widget build(BuildContext context) {
     final config = AppThemeScope.of(context);
     final effectiveOnPressed = isLoading ? null : onPressed;
+    final resolvedForeground = _foregroundColor(config);
 
     final child = isLoading
-        ? SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                _foregroundColor(config),
-              ),
-            ),
-          )
+        ? AppLoadingSpinner.small(color: resolvedForeground)
         : Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -94,8 +130,8 @@ class AppButton extends StatelessWidget {
       AppButtonVariant.primary => ElevatedButton(
           onPressed: effectiveOnPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: config.primary,
-            foregroundColor: config.onPrimary,
+            backgroundColor: backgroundColor ?? config.primary,
+            foregroundColor: resolvedForeground,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(config.borderRadius),
             ),
@@ -105,8 +141,8 @@ class AppButton extends StatelessWidget {
       AppButtonVariant.secondary => ElevatedButton(
           onPressed: effectiveOnPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: config.secondary,
-            foregroundColor: config.onSecondary,
+            backgroundColor: backgroundColor ?? config.secondary,
+            foregroundColor: resolvedForeground,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(config.borderRadius),
             ),
@@ -116,8 +152,8 @@ class AppButton extends StatelessWidget {
       AppButtonVariant.outlined => OutlinedButton(
           onPressed: effectiveOnPressed,
           style: OutlinedButton.styleFrom(
-            foregroundColor: config.primary,
-            side: BorderSide(color: config.primary),
+            foregroundColor: resolvedForeground,
+            side: BorderSide(color: resolvedForeground),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(config.borderRadius),
             ),
@@ -126,7 +162,15 @@ class AppButton extends StatelessWidget {
         ),
       AppButtonVariant.text => TextButton(
           onPressed: effectiveOnPressed,
-          style: TextButton.styleFrom(foregroundColor: config.primary),
+          style: TextButton.styleFrom(foregroundColor: resolvedForeground),
+          child: child,
+        ),
+      AppButtonVariant.gradient => _GradientButton(
+          onPressed: effectiveOnPressed,
+          borderRadius: config.borderRadius,
+          gradient: gradient ??
+              LinearGradient(colors: [config.primary, config.secondary]),
+          foregroundColor: resolvedForeground,
           child: child,
         ),
     };
@@ -135,10 +179,67 @@ class AppButton extends StatelessWidget {
   }
 
   Color _foregroundColor(AppThemeConfig config) {
+    if (foregroundColor != null) return foregroundColor!;
     return switch (variant) {
-      AppButtonVariant.primary => config.onPrimary,
+      AppButtonVariant.primary || AppButtonVariant.gradient => config.onPrimary,
       AppButtonVariant.secondary => config.onSecondary,
       AppButtonVariant.outlined || AppButtonVariant.text => config.primary,
     };
+  }
+}
+
+/// The gradient-filled button body for [AppButtonVariant.gradient].
+/// `ElevatedButton` has no built-in gradient support, so this builds
+/// the same shape/ripple/disabled behavior manually with `Material` +
+/// `InkWell` over a gradient-decorated container.
+class _GradientButton extends StatelessWidget {
+  const _GradientButton({
+    required this.onPressed,
+    required this.gradient,
+    required this.borderRadius,
+    required this.foregroundColor,
+    required this.child,
+  });
+
+  final VoidCallback? onPressed;
+  final Gradient gradient;
+  final double borderRadius;
+  final Color foregroundColor;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDisabled = onPressed == null;
+
+    return Opacity(
+      opacity: isDisabled ? 0.5 : 1,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(borderRadius),
+          child: InkWell(
+            onTap: onPressed,
+            borderRadius: BorderRadius.circular(borderRadius),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              child: DefaultTextStyle(
+                style: TextStyle(color: foregroundColor),
+                child: IconTheme(
+                  data: IconThemeData(color: foregroundColor),
+                  child: Center(child: child),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

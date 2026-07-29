@@ -53,6 +53,8 @@ export 'src/validators/validators.dart';
 
 // Widgets — buttons.
 export 'src/widgets/buttons/app_button.dart';
+export 'src/widgets/buttons/app_dropdown_trigger.dart';
+export 'src/widgets/buttons/app_loading_spinner.dart';
 
 // Widgets — cards, chips, badges.
 export 'src/widgets/cards/app_card.dart';

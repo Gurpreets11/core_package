@@ -11,7 +11,7 @@ the same network layer, error handling, and design-token-driven theming.
 
 ## Status
 
-🚧 Early development (`0.4.0`) — API may still change before a `1.0.0`
+🚧 Early development (`0.5.0`) — API may still change before a `1.0.0`
 release. Currently distributed via GitHub; will move to
 [pub.dev](https://pub.dev) once the API is stable.
 
@@ -61,10 +61,12 @@ dependencies:
   exclusively from this, so each app can be branded differently without
   touching this package's code. `AppThemeScope` exposes it via
   `InheritedWidget`.
-- **Widgets** — buttons, form fields (including a debounced search
-  field), cards/chips/badges, dialogs/action sheets, snackbars, empty/
-  error/shimmer-loading/paginated-list states, a common app bar, a
-  navigation drawer, and a bottom nav bar — see `lib/src/widgets/`.
+- **Widgets** — buttons (including a gradient variant, custom-color
+  overrides, and a themed loading spinner), form fields (including a
+  debounced search field), cards/chips/badges, dialogs/action sheets,
+  snackbars, a dropdown trigger button, empty/error/shimmer-loading/
+  paginated-list states, a common app bar, a navigation drawer, and a
+  bottom nav bar — see `lib/src/widgets/`.
 - **Base classes** — `UseCase<T, Params>` and a `Repository` marker
   interface for Clean Architecture layering.
 

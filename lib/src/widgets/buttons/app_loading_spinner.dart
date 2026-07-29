@@ -59,7 +59,7 @@ class AppLoadingSpinner extends StatelessWidget {
       child: CircularProgressIndicator(
         strokeWidth: strokeWidth,
         valueColor: AlwaysStoppedAnimation<Color>(color ?? config.primary),
-        backgroundColor: trackColor ?? config.onSurface.withOpacity(0.1),
+        backgroundColor: trackColor ?? config.onSurface.withValues(alpha: 0.1),
       ),
     );
   }

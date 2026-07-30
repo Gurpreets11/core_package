@@ -44,6 +44,10 @@ dependencies:
 - **Storage** — `SecureStorageService` (+ real `flutter_secure_storage`
   impl), so anything built on top is testable against a fake instead of a
   platform channel.
+- **Preferences** — `AppPreferencesService` (+ real `shared_preferences`
+  impl) for non-sensitive settings (theme mode, font scale, notification
+  toggles) — kept separate from secure storage, and fully testable via
+  `shared_preferences`' built-in mock support.
 - **Connectivity** — `ConnectivityService` (+ real `connectivity_plus`
   impl) and `AppConnectivityBanner`, a themed offline banner.
 - **Permissions** — `PermissionService` (+ real `permission_handler` impl,

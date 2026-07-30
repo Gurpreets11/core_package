@@ -33,6 +33,10 @@ export 'src/permissions/permission_flow.dart';
 export 'src/permissions/permission_service.dart';
 export 'src/permissions/permission_service_impl.dart';
 
+// Preferences.
+export 'src/preferences/app_preferences_service.dart';
+export 'src/preferences/app_preferences_service_impl.dart';
+
 // Storage.
 export 'src/storage/secure_storage_service.dart';
 export 'src/storage/secure_storage_service_impl.dart';

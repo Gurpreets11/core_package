@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 (in progress)
+
+- **New widget**: `AppExitGuard` — wraps a root screen with either a confirm-dialog or "tap back again to exit" back-press behavior, via `PopScope`.
+- **`AppCommonBar`**: now supports an `overflowMenuItems` parameter — a 3-dot menu (`AppOverflowMenuItem`, with an optional destructive/error-colored style) rendered as the last action.
+- **Testing**: added coverage for both `AppExitGuard` behaviors, and for `AppCommonBar` (title, no-menu-by-default, overflow menu items and selection). Note: `SystemNavigator.pop()` is a real platform call inside `AppExitGuard`'s exit path — verify that test file locally, since it wasn't possible to run against a real Flutter SDK in this environment.
+- More additions planned for this version — see the project's ongoing planning notes (settings screen infrastructure, responsive theming, feature flags).
+
 ## 0.5.0
 
 - **Buttons**: `AppButton` gains a `gradient` variant (custom or default primary→secondary gradient, built via a hand-rolled `Material`+`InkWell` since `ElevatedButton` has no native gradient support) plus `backgroundColor`/`foregroundColor` overrides for one-off custom-color buttons that don't fit the theme's two brand colors.

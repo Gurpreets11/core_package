@@ -11,7 +11,7 @@ the same network layer, error handling, and design-token-driven theming.
 
 ## Status
 
-🚧 Early development (`0.5.0`) — API may still change before a `1.0.0`
+🚧 Early development (`0.6.0`) — API may still change before a `1.0.0`
 release. Currently distributed via GitHub; will move to
 [pub.dev](https://pub.dev) once the API is stable.
 

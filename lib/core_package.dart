@@ -73,6 +73,7 @@ export 'src/widgets/form_fields/app_text_field.dart';
 // Widgets — navigation.
 export 'src/widgets/navigation/app_bottom_nav_bar.dart';
 export 'src/widgets/navigation/app_common_bar.dart';
+export 'src/widgets/navigation/app_exit_guard.dart';
 export 'src/widgets/navigation/app_navigation_drawer.dart';
 
 // Widgets — empty/error/loading/connectivity/pagination states.

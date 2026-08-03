@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+- **Fix**: dark mode made text invisible on cards and several other widgets (`AppCard`, `AppEmptyState`, `AppErrorState`, `AppChip`, `AppShimmer`, and anything else reading `AppThemeConfig.surface`/`onSurface`/`background`/`onBackground` via `AppThemeScope.of`). Root cause: `AppThemeScope.of` always returned the *light-mode* values for those four fields regardless of which mode was actually active, while `Theme.of(context).textTheme` (used for most text) correctly flipped to dark-mode colors — so widgets ended up rendering dark-mode text against light-mode backgrounds, or vice versa.
+    - Fixed centrally: `AppThemeConfig.resolvedFor(Brightness)` normalizes `surface`/`background`/`onSurface`/`onBackground` to the dark variants when needed; `AppThemeScope.of` now calls this automatically using `Theme.of(context).brightness`. No widget-level changes were needed — every widget reading `AppThemeScope.of(context)` is fixed by this one change.
+    - Explicit `cardStyle`/`fieldStyle` overrides are untouched by this fix, since those are absolute choices, not light/dark-relative ones.
+- **Testing**: added `app_theme_scope_test.dart` (a true regression test — simulates a real `MaterialApp` with `theme`/`darkTheme`/`themeMode`, confirms `AppThemeScope.of` returns dark-mode colors when dark mode is active, and confirms the resulting background/foreground colors are actually distinct) and extended `app_theme_config_test.dart` with `resolvedFor` coverage.
+
 ## 0.6.0
 
 - **New widget**: `AppExitGuard` — wraps a root screen with either a confirm-dialog or "tap back again to exit" back-press behavior, via `PopScope`.

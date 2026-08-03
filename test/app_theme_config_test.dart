@@ -94,4 +94,36 @@ void main() {
       expect(custom.resolvedFieldBorderRadius, 4);
     });
   });
+
+  group('AppThemeConfig.resolvedFor', () {
+    test('is a no-op for Brightness.light', () {
+      final resolved = config.resolvedFor(Brightness.light);
+      expect(resolved.surface, config.surface);
+      expect(resolved.background, config.background);
+      expect(resolved.onSurface, config.onSurface);
+      expect(resolved.onBackground, config.onBackground);
+    });
+
+    test('swaps surface/background/onSurface/onBackground for dark', () {
+      final resolved = config.resolvedFor(Brightness.dark);
+      expect(resolved.surface, config.darkSurface);
+      expect(resolved.background, config.darkBackground);
+      expect(resolved.onSurface, config.onDarkSurface);
+      expect(resolved.onBackground, config.onDarkBackground);
+    });
+
+    test('does not alter brand colors or explicit cardStyle overrides', () {
+      final withCardOverride = config.copyWith(
+        cardStyle: const AppCardStyle(backgroundColor: Color(0xFF123456)),
+      );
+      final resolved = withCardOverride.resolvedFor(Brightness.dark);
+
+      expect(resolved.primary, config.primary);
+      expect(resolved.secondary, config.secondary);
+      expect(
+        resolved.cardStyle.backgroundColor,
+        const Color(0xFF123456),
+      );
+    });
+  });
 }

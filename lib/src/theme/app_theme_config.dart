@@ -212,6 +212,27 @@ class AppThemeConfig {
     );
   }
 
+  /// Returns a copy of this config with [surface]/[background]/
+  /// [onSurface]/[onBackground] normalized to the dark variants when
+  /// [brightness] is dark (a no-op for [Brightness.light]).
+  ///
+  /// This is what makes widgets reading `config.surface`/
+  /// `config.onSurface` (via [AppThemeScope.of], which calls this
+  /// automatically) always get the color appropriate for whichever
+  /// mode is currently active — without each widget needing its own
+  /// light/dark branching. Explicit overrides on [cardStyle]/
+  /// [fieldStyle] are left untouched, since those are absolute
+  /// choices, not light/dark-relative ones.
+  AppThemeConfig resolvedFor(Brightness brightness) {
+    if (brightness == Brightness.light) return this;
+    return copyWith(
+      background: darkBackground,
+      surface: darkSurface,
+      onBackground: onDarkBackground,
+      onSurface: onDarkSurface,
+    );
+  }
+
   /// Returns a copy of this config with the given fields replaced.
   AppThemeConfig copyWith({
     Color? primary,

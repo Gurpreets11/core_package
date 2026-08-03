@@ -4,10 +4,10 @@ description: >
   logging, storage, connectivity, permissions, validation, a configurable
   theming contract, and base architecture classes for Clean Architecture
   apps.
-version: 0.6.0
-homepage: https://github.com/your-org/core-package
-repository: https://github.com/your-org/core-package
-issue_tracker: https://github.com/your-org/core-package/issues
+version: 0.6.1
+homepage: https://github.com/Gurpreets11/core-package
+repository: https://github.com/Gurpreets11/core-package
+issue_tracker: https://github.com/Gurpreets11/core-package/issues
 
 environment:
   sdk: '>=3.3.0 <4.0.0'

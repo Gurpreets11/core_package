@@ -67,6 +67,7 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = AppThemeScope.of(context);
+    final fieldStyle = config.fieldStyle;
 
     return TextFormField(
       controller: controller,
@@ -80,8 +81,14 @@ class AppTextField extends StatelessWidget {
         helperText: helperText,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         suffixIcon: suffixIcon,
+        filled: fieldStyle.filled,
+        fillColor: fieldStyle.filled
+            ? fieldStyle.fillColor ?? config.onSurface.withValues(alpha: 0.04)
+            : null,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(config.borderRadius),
+          borderRadius: BorderRadius.circular(
+            config.resolvedFieldBorderRadius,
+          ),
         ),
       ),
     );

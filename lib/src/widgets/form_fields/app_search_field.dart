@@ -80,7 +80,7 @@ class _AppSearchFieldState extends State<AppSearchField> {
           },
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(config.borderRadius),
+          borderRadius: BorderRadius.circular(config.resolvedFieldBorderRadius),
         ),
       ),
     );

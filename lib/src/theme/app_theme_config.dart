@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app_card_style.dart';
+import 'app_field_style.dart';
 import 'app_spacing.dart';
 
 /// The full set of design tokens a consuming app supplies to brand the
@@ -37,6 +39,8 @@ class AppThemeConfig {
     this.textTheme,
     this.spacingUnit = 8.0,
     this.borderRadius = 8.0,
+    this.cardStyle = const AppCardStyle(),
+    this.fieldStyle = const AppFieldStyle(),
   });
 
   /// A sensible neutral default — apps should override this with their
@@ -106,10 +110,35 @@ class AppThemeConfig {
   /// Default corner radius for buttons, cards, and form fields.
   final double borderRadius;
 
+  /// Component-level style overrides for [AppCard]. Defaults to
+  /// [AppCardStyle]'s own defaults, which fall back to this config's
+  /// shared [borderRadius]/[surface].
+  final AppCardStyle cardStyle;
+
+  /// Component-level style overrides for form fields ([AppTextField],
+  /// [AppDropdownField], [AppDateField]). Defaults to [AppFieldStyle]'s
+  /// own defaults, which fall back to this config's shared
+  /// [borderRadius].
+  final AppFieldStyle fieldStyle;
+
   /// A named spacing scale (`xs`/`sm`/`md`/`lg`/`xl`) derived from
   /// [spacingUnit], so widgets reference `config.spacing.md` instead of
   /// re-deriving multiples of the raw unit inline.
   AppSpacing get spacing => AppSpacing(spacingUnit);
+
+  /// The corner radius [AppCard] should actually use — [cardStyle]'s
+  /// override if set, otherwise the shared [borderRadius].
+  double get resolvedCardBorderRadius => cardStyle.borderRadius ?? borderRadius;
+
+  /// The background color [AppCard] should actually use —
+  /// [cardStyle]'s override if set, otherwise the shared [surface].
+  Color get resolvedCardBackgroundColor => cardStyle.backgroundColor ?? surface;
+
+  /// The corner radius form fields should actually use —
+  /// [fieldStyle]'s override if set, otherwise the shared
+  /// [borderRadius].
+  double get resolvedFieldBorderRadius =>
+      fieldStyle.borderRadius ?? borderRadius;
 
   /// Builds a Material [ThemeData] for the given [brightness] (defaults
   /// to light). Pass this to both `MaterialApp.theme` (light) and
@@ -203,6 +232,8 @@ class AppThemeConfig {
     TextTheme? textTheme,
     double? spacingUnit,
     double? borderRadius,
+    AppCardStyle? cardStyle,
+    AppFieldStyle? fieldStyle,
   }) {
     return AppThemeConfig(
       primary: primary ?? this.primary,
@@ -223,6 +254,8 @@ class AppThemeConfig {
       textTheme: textTheme ?? this.textTheme,
       spacingUnit: spacingUnit ?? this.spacingUnit,
       borderRadius: borderRadius ?? this.borderRadius,
+      cardStyle: cardStyle ?? this.cardStyle,
+      fieldStyle: fieldStyle ?? this.fieldStyle,
     );
   }
 }

@@ -60,11 +60,15 @@ dependencies:
 - **Validation** — composable `Validators` (email, phone, password,
   required, min/max length, matches).
 - **Theming** — `AppThemeConfig`, a design-token contract with **built-in
-  light/dark mode support**, a wired-up `TextTheme`, and a named
-  `AppSpacing` scale (`xs`/`sm`/`md`/`lg`/`xl`). Shared widgets read
-  exclusively from this, so each app can be branded differently without
-  touching this package's code. `AppThemeScope` exposes it via
+  light/dark mode support**, a wired-up `TextTheme`, a named
+  `AppSpacing` scale (`xs`/`sm`/`md`/`lg`/`xl`), and component-level
+  overrides (`cardStyle`/`fieldStyle`) for cards and form fields
+  independent of the shared border radius/surface color. Shared widgets
+  read exclusively from this, so each app can be branded differently
+  without touching this package's code. `AppThemeScope` exposes it via
   `InheritedWidget`.
+- **Responsive** — `AppBreakpoints`, `AppResponsive` (breakpoint checks,
+  a per-breakpoint `value<T>` picker), and `AppResponsiveBuilder`.
 - **Widgets** — buttons (including a gradient variant, custom-color
   overrides, and a themed loading spinner), form fields (including a
   debounced search field), cards/chips/badges, dialogs/action sheets,

@@ -102,7 +102,7 @@ class _AppDateFieldState extends State<AppDateField> {
         labelText: widget.label,
         suffixIcon: const Icon(Icons.calendar_today_outlined),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(config.borderRadius),
+          borderRadius: BorderRadius.circular(config.resolvedFieldBorderRadius),
         ),
       ),
       onTap: widget.enabled

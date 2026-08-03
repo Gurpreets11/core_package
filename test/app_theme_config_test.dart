@@ -26,14 +26,16 @@ void main() {
       expect(theme.colorScheme.surface, config.darkSurface);
     });
 
-    test('brand colors (primary/secondary/error) stay the same across modes',
-        () {
-      final light = config.toThemeData();
-      final dark = config.toThemeData(brightness: Brightness.dark);
-      expect(light.colorScheme.primary, dark.colorScheme.primary);
-      expect(light.colorScheme.secondary, dark.colorScheme.secondary);
-      expect(light.colorScheme.error, dark.colorScheme.error);
-    });
+    test(
+      'brand colors (primary/secondary/error) stay the same across modes',
+      () {
+        final light = config.toThemeData();
+        final dark = config.toThemeData(brightness: Brightness.dark);
+        expect(light.colorScheme.primary, dark.colorScheme.primary);
+        expect(light.colorScheme.secondary, dark.colorScheme.secondary);
+        expect(light.colorScheme.error, dark.colorScheme.error);
+      },
+    );
   });
 
   group('AppThemeConfig.spacing', () {
@@ -53,6 +55,43 @@ void main() {
       expect(updated.primary, const Color(0xFF000000));
       expect(updated.secondary, config.secondary);
       expect(updated.background, config.background);
+    });
+  });
+
+  group('AppThemeConfig — resolved card/field styling', () {
+    test('resolvedCardBorderRadius falls back to borderRadius when unset', () {
+      expect(config.resolvedCardBorderRadius, config.borderRadius);
+    });
+
+    test('cardStyle.borderRadius overrides the shared borderRadius', () {
+      final custom = config.copyWith(
+        cardStyle: const AppCardStyle(borderRadius: 20),
+      );
+      expect(custom.resolvedCardBorderRadius, 20);
+      // The shared value is untouched — only cards are affected.
+      expect(custom.borderRadius, config.borderRadius);
+    });
+
+    test('resolvedCardBackgroundColor falls back to surface when unset', () {
+      expect(config.resolvedCardBackgroundColor, config.surface);
+    });
+
+    test('cardStyle.backgroundColor overrides the shared surface color', () {
+      final custom = config.copyWith(
+        cardStyle: const AppCardStyle(backgroundColor: Color(0xFF00FF00)),
+      );
+      expect(custom.resolvedCardBackgroundColor, const Color(0xFF00FF00));
+    });
+
+    test('resolvedFieldBorderRadius falls back to borderRadius when unset', () {
+      expect(config.resolvedFieldBorderRadius, config.borderRadius);
+    });
+
+    test('fieldStyle.borderRadius overrides the shared borderRadius', () {
+      final custom = config.copyWith(
+        fieldStyle: const AppFieldStyle(borderRadius: 4),
+      );
+      expect(custom.resolvedFieldBorderRadius, 4);
     });
   });
 }

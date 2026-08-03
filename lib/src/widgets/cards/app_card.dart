@@ -35,20 +35,21 @@ class AppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final config = AppThemeScope.of(context);
+    final resolvedRadius = config.resolvedCardBorderRadius;
 
-    final content = Padding(
-      padding: padding ?? EdgeInsets.all(config.spacing.md),
-      child: child,
-    );
+    final resolvedPadding = padding ??
+        config.cardStyle.padding ??
+        EdgeInsets.all(config.spacing.md);
+    final content = Padding(padding: resolvedPadding, child: child);
 
     return Material(
-      color: config.surface,
-      borderRadius: BorderRadius.circular(config.borderRadius),
-      elevation: 1,
+      color: config.resolvedCardBackgroundColor,
+      borderRadius: BorderRadius.circular(resolvedRadius),
+      elevation: config.cardStyle.elevation,
       child: onTap != null
           ? InkWell(
               onTap: onTap,
-              borderRadius: BorderRadius.circular(config.borderRadius),
+              borderRadius: BorderRadius.circular(resolvedRadius),
               child: content,
             )
           : content,

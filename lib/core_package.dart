@@ -42,11 +42,15 @@ export 'src/storage/secure_storage_service.dart';
 export 'src/storage/secure_storage_service_impl.dart';
 
 // Theming.
+export 'src/theme/app_card_style.dart';
+export 'src/theme/app_field_style.dart';
 export 'src/theme/app_spacing.dart';
 export 'src/theme/app_theme_config.dart';
 export 'src/theme/app_theme_scope.dart';
 
 // Utils.
+export 'src/utils/app_breakpoints.dart';
+export 'src/utils/app_responsive.dart';
 export 'src/utils/debouncer.dart';
 export 'src/utils/extensions.dart';
 export 'src/utils/formatters.dart';
@@ -80,8 +84,9 @@ export 'src/widgets/navigation/app_common_bar.dart';
 export 'src/widgets/navigation/app_exit_guard.dart';
 export 'src/widgets/navigation/app_navigation_drawer.dart';
 
-// Widgets — empty/error/loading/connectivity/pagination states.
+// Widgets — empty/error/loading/connectivity/pagination/responsive states.
 export 'src/widgets/states/app_connectivity_banner.dart';
 export 'src/widgets/states/app_paginated_list_view.dart';
+export 'src/widgets/states/app_responsive_builder.dart';
 export 'src/widgets/states/app_shimmer.dart';
 export 'src/widgets/states/app_state_placeholders.dart';

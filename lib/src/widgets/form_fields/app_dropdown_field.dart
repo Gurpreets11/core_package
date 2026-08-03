@@ -59,7 +59,7 @@ class AppDropdownField<T> extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(config.borderRadius),
+          borderRadius: BorderRadius.circular(config.resolvedFieldBorderRadius),
         ),
       ),
       items: items

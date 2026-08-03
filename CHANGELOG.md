@@ -1,13 +1,14 @@
 # Changelog
 
-## 0.6.0 (in progress)
+## 0.6.0
 
 - **New widget**: `AppExitGuard` — wraps a root screen with either a confirm-dialog or "tap back again to exit" back-press behavior, via `PopScope`.
 - **`AppCommonBar`**: now supports an `overflowMenuItems` parameter — a 3-dot menu (`AppOverflowMenuItem`, with an optional destructive/error-colored style) rendered as the last action.
 - **New**: `AppPreferencesService` (+ `AppPreferencesServiceImpl`, backed by `shared_preferences`) — non-sensitive settings storage (theme mode, font scale, notification toggles), kept separate from `SecureStorageService` since secrets and simple settings shouldn't share a storage mechanism.
-- **Fix**: `pubspec.yaml` had an accidental duplicate `intl` dependency entry from an earlier round — removed. If you pulled the previous round's `pubspec.yaml`, check your local copy for this duplicate too.
-- **Testing**: added coverage for both `AppExitGuard` behaviors, `AppCommonBar`, and `AppPreferencesServiceImpl` (fully testable via `shared_preferences`' built-in mock support — no platform-channel mocking needed, unlike `SecureStorageService`/`ConnectivityService`). Note: `SystemNavigator.pop()` is a real platform call inside `AppExitGuard`'s exit path — verify that test file locally, since it wasn't possible to run against a real Flutter SDK in this environment.
-- More additions planned for this version — see the project's ongoing planning notes (settings screen infrastructure, responsive theming, feature flags).
+- **Theming**: `AppThemeConfig` gains `cardStyle` (`AppCardStyle`) and `fieldStyle` (`AppFieldStyle`) — component-level overrides (elevation, border radius, background/fill color, padding) independent of the shared `borderRadius`/`surface`. `AppCard` and all form fields (`AppTextField`, `AppDropdownField`, `AppDateField`, `AppSearchField`) now consume these via new `resolvedCardBorderRadius`/`resolvedCardBackgroundColor`/`resolvedFieldBorderRadius` getters.
+- **New**: `AppBreakpoints`, `AppResponsive` (`isMobile`/`isTablet`/`isDesktop`, a per-breakpoint `value<T>` picker), and `AppResponsiveBuilder` — screen-width-based responsive helpers.
+- **Fix**: `pubspec.yaml` had an accidental duplicate `intl` dependency entry from an earlier round — removed. If you pulled a previous round's `pubspec.yaml`, check your local copy for this duplicate too.
+- **Testing**: added coverage for both `AppExitGuard` behaviors, `AppCommonBar`, `AppPreferencesServiceImpl`, the new resolved card/field style getters, `AppCard`'s style overrides, and `AppResponsive`/`AppResponsiveBuilder` at multiple simulated widths. Note: `SystemNavigator.pop()` is a real platform call inside `AppExitGuard`'s exit path — verify that test file locally, since it wasn't possible to run against a real Flutter SDK in this environment.
 
 ## 0.5.0
 

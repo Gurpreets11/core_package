@@ -1,10 +1,19 @@
 # Changelog
 
+## 0.7.0
+
+- **New**: `AppFeatureFlags` (`lib/src/config/`) — boolean gates (`enableIdleTimeout`, `enableBiometricLock`, `enableForceUpdateCheck`, `enableLocalization`) for optional functionality, opt-in per app.
+- **New widget**: `AppIdleTimeoutGuard` — auto-triggers `onTimeout` (e.g. logout) after a period of no pointer activity; takes an `enabled` flag so it wires directly to `AppFeatureFlags.enableIdleTimeout` without restructuring the widget tree.
+- **New**: `BiometricLockService` (+ `BiometricLockServiceImpl`, backed by `local_auth`) — biometric/PIN re-authentication, e.g. on app resume. `authenticate()` returns a plain `bool`; cancellation, failure, and "unavailable" are all just "not authenticated," not separate error conditions the caller needs to branch on.
+- **New**: `UpdateCheckService` — an interface with **no bundled implementation**, since "check for updates" has no universal backend. `AppVersionComparator` is a small optional helper (numeric, not lexical, version-segment comparison) for apps implementing it. `flutter-starter` will ship a demo/stub implementation, same honest-scope pattern as its `AuthRepositoryImpl`.
+- **Fix**: removed two orphaned, unused, never-exported files (`app_debouncer.dart`, `app_formatters.dart`) left over from an earlier draft — `app_formatters.dart` in particular defined a second `AppFormatters` class that would have collided with the one already shipped in `formatters.dart` if it were ever exported.
+- **Testing**: added coverage for `AppFeatureFlags`, `AppVersionComparator`, and `AppIdleTimeoutGuard` (timeout firing, activity resetting the timer, the `enabled` flag disabling it entirely). `BiometricLockServiceImpl` isn't unit-tested here, same reasoning as other platform-plugin-backed implementations (`SecureStorageServiceImpl`, `ConnectivityServiceImpl`) — the abstraction it implements is the testable surface.
+
 ## 0.6.1
 
 - **Fix**: dark mode made text invisible on cards and several other widgets (`AppCard`, `AppEmptyState`, `AppErrorState`, `AppChip`, `AppShimmer`, and anything else reading `AppThemeConfig.surface`/`onSurface`/`background`/`onBackground` via `AppThemeScope.of`). Root cause: `AppThemeScope.of` always returned the *light-mode* values for those four fields regardless of which mode was actually active, while `Theme.of(context).textTheme` (used for most text) correctly flipped to dark-mode colors — so widgets ended up rendering dark-mode text against light-mode backgrounds, or vice versa.
-    - Fixed centrally: `AppThemeConfig.resolvedFor(Brightness)` normalizes `surface`/`background`/`onSurface`/`onBackground` to the dark variants when needed; `AppThemeScope.of` now calls this automatically using `Theme.of(context).brightness`. No widget-level changes were needed — every widget reading `AppThemeScope.of(context)` is fixed by this one change.
-    - Explicit `cardStyle`/`fieldStyle` overrides are untouched by this fix, since those are absolute choices, not light/dark-relative ones.
+  - Fixed centrally: `AppThemeConfig.resolvedFor(Brightness)` normalizes `surface`/`background`/`onSurface`/`onBackground` to the dark variants when needed; `AppThemeScope.of` now calls this automatically using `Theme.of(context).brightness`. No widget-level changes were needed — every widget reading `AppThemeScope.of(context)` is fixed by this one change.
+  - Explicit `cardStyle`/`fieldStyle` overrides are untouched by this fix, since those are absolute choices, not light/dark-relative ones.
 - **Testing**: added `app_theme_scope_test.dart` (a true regression test — simulates a real `MaterialApp` with `theme`/`darkTheme`/`themeMode`, confirms `AppThemeScope.of` returns dark-mode colors when dark mode is active, and confirms the resulting background/foreground colors are actually distinct) and extended `app_theme_config_test.dart` with `resolvedFor` coverage.
 
 ## 0.6.0

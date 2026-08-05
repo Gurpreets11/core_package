@@ -11,7 +11,7 @@ the same network layer, error handling, and design-token-driven theming.
 
 ## Status
 
-🚧 Early development (`0.6.1`) — API may still change before a `1.0.0`
+🚧 Early development (`0.7.0`) — API may still change before a `1.0.0`
 release. Currently distributed via GitHub; will move to
 [pub.dev](https://pub.dev) once the API is stable.
 
@@ -77,6 +77,14 @@ dependencies:
   bottom nav bar — see `lib/src/widgets/`.
 - **Base classes** — `UseCase<T, Params>` and a `Repository` marker
   interface for Clean Architecture layering.
+- **Feature flags** — `AppFeatureFlags`, opt-in gates for idle timeout,
+  biometric lock, force-update checking, and localization.
+- **Idle timeout** — `AppIdleTimeoutGuard`, auto-triggers a callback
+  (e.g. logout) after a period of no activity.
+- **Biometric lock** — `BiometricLockService` (+ real `local_auth` impl)
+  for re-authentication on app resume.
+- **Update checking** — `UpdateCheckService` (interface only — no
+  universal backend exists) + `AppVersionComparator`.
 
 ## Quick start
 
@@ -88,47 +96,47 @@ import 'package:flutter/material.dart';
 // 1. Configure Dio for this app's environment.
 final dio = Dio(BaseOptions(baseUrl: 'https://api.example.com'));
 dio.interceptors.addAll([
-  AuthInterceptor(
-    getToken: () async => tokenStorage.readToken(),
-    onUnauthorized: () async => authController.logout(),
-  ),
-  RetryInterceptor(dio: dio, maxAttempts: 2),
-  LoggingInterceptor(),
+AuthInterceptor(
+getToken: () async => tokenStorage.readToken(),
+onUnauthorized: () async => authController.logout(),
+),
+RetryInterceptor(dio: dio, maxAttempts: 2),
+LoggingInterceptor(),
 ]);
 
 final apiClient = ApiClient(dio);
 
 // 2. Call it with a typed fromJson mapper — no raw dynamic, no try/catch.
 final result = await apiClient.get<Lead>(
-  '/leads/42',
-  fromJson: (json) => Lead.fromJson(json as Map<String, dynamic>),
+'/leads/42',
+fromJson: (json) => Lead.fromJson(json as Map<String, dynamic>),
 );
 result.when(
-  onSuccess: (lead) => print(lead.name),
-  onFailure: (failure) => print(failure.message),
+onSuccess: (lead) => print(lead.name),
+onFailure: (failure) => print(failure.message),
 );
 
 // 3. Wrap the app root with this app's brand theme (light + dark).
 void main() {
-  final themeConfig = AppThemeConfig(
-    primary: const Color(0xFF1A237E),
-    secondary: const Color(0xFF00897B),
-    background: const Color(0xFFF5F5F5),
-    surface: Colors.white,
-    error: const Color(0xFFD32F2F),
-  );
+final themeConfig = AppThemeConfig(
+primary: const Color(0xFF1A237E),
+secondary: const Color(0xFF00897B),
+background: const Color(0xFFF5F5F5),
+surface: Colors.white,
+error: const Color(0xFFD32F2F),
+);
 
-  runApp(
-    AppThemeScope(
-      config: themeConfig,
-      child: MaterialApp(
-        theme: themeConfig.toThemeData(),
-        darkTheme: themeConfig.toThemeData(brightness: Brightness.dark),
-        themeMode: ThemeMode.system,
-        home: const HomeScreen(),
-      ),
-    ),
-  );
+runApp(
+AppThemeScope(
+config: themeConfig,
+child: MaterialApp(
+theme: themeConfig.toThemeData(),
+darkTheme: themeConfig.toThemeData(brightness: Brightness.dark),
+themeMode: ThemeMode.system,
+home: const HomeScreen(),
+),
+),
+);
 }
 ```
 

@@ -9,6 +9,9 @@ export 'src/base/repository.dart';
 export 'src/base/result.dart';
 export 'src/base/use_case.dart';
 
+// Config.
+export 'src/config/app_feature_flags.dart';
+
 // Connectivity.
 export 'src/connectivity/connectivity_service.dart';
 export 'src/connectivity/connectivity_service_impl.dart';
@@ -37,6 +40,10 @@ export 'src/permissions/permission_service_impl.dart';
 export 'src/preferences/app_preferences_service.dart';
 export 'src/preferences/app_preferences_service_impl.dart';
 
+// Security.
+export 'src/security/biometric_lock_service.dart';
+export 'src/security/biometric_lock_service_impl.dart';
+
 // Storage.
 export 'src/storage/secure_storage_service.dart';
 export 'src/storage/secure_storage_service_impl.dart';
@@ -48,9 +55,13 @@ export 'src/theme/app_spacing.dart';
 export 'src/theme/app_theme_config.dart';
 export 'src/theme/app_theme_scope.dart';
 
+// Updates.
+export 'src/updates/update_check_service.dart';
+
 // Utils.
 export 'src/utils/app_breakpoints.dart';
 export 'src/utils/app_responsive.dart';
+export 'src/utils/app_version_comparator.dart';
 export 'src/utils/debouncer.dart';
 export 'src/utils/extensions.dart';
 export 'src/utils/formatters.dart';
@@ -86,6 +97,7 @@ export 'src/widgets/navigation/app_navigation_drawer.dart';
 
 // Widgets — empty/error/loading/connectivity/pagination/responsive states.
 export 'src/widgets/states/app_connectivity_banner.dart';
+export 'src/widgets/states/app_idle_timeout_guard.dart';
 export 'src/widgets/states/app_paginated_list_view.dart';
 export 'src/widgets/states/app_responsive_builder.dart';
 export 'src/widgets/states/app_shimmer.dart';

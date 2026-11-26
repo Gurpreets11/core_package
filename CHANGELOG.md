@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0
+
+### Added
+- Animated widgets (`lib/src/widgets/animated/`): `AppGradientBackground`, `AppFadeSlideIn`,
+  `AppStaggeredColumn`, `AppPressableScale`, `AppSoftCard`, `AppAnimatedGradientButton`,
+  `AppFloatingNavBar` (+ `AppNavItem`). No new dependencies; all use the active `ColorScheme`
+  and respect the system reduce-motion setting.
+
 ## 0.7.0
 
 - **New**: `AppFeatureFlags` (`lib/src/config/`) — boolean gates (`enableIdleTimeout`, `enableBiometricLock`, `enableForceUpdateCheck`, `enableLocalization`) for optional functionality, opt-in per app.

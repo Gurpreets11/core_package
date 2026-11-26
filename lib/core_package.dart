@@ -102,3 +102,6 @@ export 'src/widgets/states/app_paginated_list_view.dart';
 export 'src/widgets/states/app_responsive_builder.dart';
 export 'src/widgets/states/app_shimmer.dart';
 export 'src/widgets/states/app_state_placeholders.dart';
+
+// animation
+export 'src/widgets/animated/animated.dart';

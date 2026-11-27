@@ -68,14 +68,19 @@ class _AppConnectivityBannerState extends State<AppConnectivityBanner> {
   @override
   Widget build(BuildContext context) {
     final config = AppThemeScope.of(context);
+    final topInset = MediaQuery.paddingOf(context).top;
 
     return Column(
       children: [
+        // While offline the bar sits under the status bar, so the app
+        // content below it must not add the status-bar padding again.
         AnimatedContainer(
           duration: const Duration(milliseconds: 250),
-          height: _isOffline ? 32 : 0,
+          height: _isOffline ? topInset + 32 : 0,
+          padding: EdgeInsets.only(top: _isOffline ? topInset : 0),
           color: config.error,
           width: double.infinity,
+          clipBehavior: Clip.hardEdge,
           child: _isOffline
               ? Center(
                   child: Text(
@@ -85,7 +90,13 @@ class _AppConnectivityBannerState extends State<AppConnectivityBanner> {
                 )
               : null,
         ),
-        Expanded(child: widget.child),
+        Expanded(
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: _isOffline,
+            child: widget.child,
+          ),
+        ),
       ],
     );
   }

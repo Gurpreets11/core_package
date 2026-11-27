@@ -30,6 +30,7 @@ export 'src/network/api_response.dart';
 export 'src/network/interceptors/auth_interceptor.dart';
 export 'src/network/interceptors/logging_interceptor.dart';
 export 'src/network/interceptors/retry_interceptor.dart';
+export 'src/network/interceptors/token_refresh_interceptor.dart';
 
 // Permissions.
 export 'src/permissions/permission_flow.dart';

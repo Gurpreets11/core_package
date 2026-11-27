@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_theme_config.dart';
 import '../../theme/app_theme_scope.dart';
+import '../animated/app_pressable_scale.dart';
 import 'app_loading_spinner.dart';
 
 /// The visual style of an [AppButton].
@@ -171,6 +172,7 @@ class AppButton extends StatelessWidget {
           gradient: gradient ??
               LinearGradient(colors: [config.primary, config.secondary]),
           foregroundColor: resolvedForeground,
+          shadowColor: config.primary,
           child: child,
         ),
     };
@@ -190,14 +192,16 @@ class AppButton extends StatelessWidget {
 
 /// The gradient-filled button body for [AppButtonVariant.gradient].
 /// `ElevatedButton` has no built-in gradient support, so this builds
-/// the same shape/ripple/disabled behavior manually with `Material` +
-/// `InkWell` over a gradient-decorated container.
+/// the shape and disabled behavior manually: a gradient-decorated
+/// container with a soft shadow, and a subtle scale-down while pressed
+/// (via [AppPressableScale]) instead of an ink ripple.
 class _GradientButton extends StatelessWidget {
   const _GradientButton({
     required this.onPressed,
     required this.gradient,
     required this.borderRadius,
     required this.foregroundColor,
+    required this.shadowColor,
     required this.child,
   });
 
@@ -205,36 +209,45 @@ class _GradientButton extends StatelessWidget {
   final Gradient gradient;
   final double borderRadius;
   final Color foregroundColor;
+  final Color shadowColor;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final isDisabled = onPressed == null;
+    final labelStyle = Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: foregroundColor,
+              fontWeight: FontWeight.w600,
+            ) ??
+        TextStyle(color: foregroundColor, fontWeight: FontWeight.w600);
 
-    return Opacity(
-      opacity: isDisabled ? 0.5 : 1,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        child: Material(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(borderRadius),
-          child: InkWell(
-            onTap: onPressed,
-            borderRadius: BorderRadius.circular(borderRadius),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-              child: DefaultTextStyle(
-                style: TextStyle(color: foregroundColor),
-                child: IconTheme(
-                  data: IconThemeData(color: foregroundColor),
-                  child: Center(child: child),
-                ),
+    return Semantics(
+      button: true,
+      enabled: !isDisabled,
+      child: Opacity(
+        opacity: isDisabled ? 0.5 : 1,
+        child: AppPressableScale(
+          onTap: onPressed,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              gradient: gradient,
+              borderRadius: BorderRadius.circular(borderRadius),
+              boxShadow: isDisabled
+                  ? null
+                  : [
+                      BoxShadow(
+                        color: shadowColor.withValues(alpha: 0.30),
+                        blurRadius: 18,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+            ),
+            child: DefaultTextStyle(
+              style: labelStyle,
+              child: IconTheme(
+                data: IconThemeData(color: foregroundColor),
+                child: Center(child: child),
               ),
             ),
           ),

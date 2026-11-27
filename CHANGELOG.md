@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.9.0
+
+### Changed
+- `AppButton` gradient variant: soft shadow and a press-down scale animation (replaces the ripple).
+- `AppBottomNavBar` is now a floating rounded bar by default; pass `floating: false` for the standard Material 3 `NavigationBar`. Use it inside a `Scaffold` with `extendBody: true`.
+- `AppExitGuard`: new `isAtRoot`, `onBackFromNonRoot`, `hintDuration` and `hintMargin` options (back on a non-home tab can go to home first; the hint no longer stays as long as the exit window).
+- `AppConnectivityBanner` now sits below the status bar and stops the app content from adding the status-bar padding twice while it is visible.
+
+### Added
+- `TokenRefreshInterceptor`: refreshes the access token on `401` (one shared refresh for concurrent requests) and retries the request once; calls `onSessionExpired` if refreshing fails.
+
+### Removed (were only in 0.8.x)
+- `AppAnimatedGradientButton`: use `AppButton(variant: AppButtonVariant.gradient)`.
+- `AppFloatingNavBar` / `AppNavItem`: use `AppBottomNavBar` / `AppBottomNavItem`.
+
+
 ## 0.8.0
 
 ### Added

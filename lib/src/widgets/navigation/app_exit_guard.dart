@@ -10,7 +10,7 @@ enum AppExitBehavior {
   confirmDialog,
 
   /// Require a second back press within [AppExitGuard.doubleTapWindow]
-  /// to actually exit — the common "Tap back again to exit" pattern —
+  /// to actually exit - the common "Tap back again to exit" pattern -
   /// showing a brief hint snackbar on the first press.
   doubleTapToExit,
 }
@@ -19,18 +19,23 @@ enum AppExitBehavior {
 /// the app rather than pop to nothing) with a confirmation step before
 /// actually exiting.
 ///
-/// Place this around whichever screen is the effective root of your
-/// navigation stack — commonly the home screen inside your shell:
+/// Place this around the shell that hosts your tabs:
 ///
 /// ```dart
 /// AppExitGuard(
 ///   behavior: AppExitBehavior.doubleTapToExit,
-///   child: const HomeScreen(),
+///   isAtRoot: currentTab == 0,
+///   onBackFromNonRoot: () => goToFirstTab(),
+///   child: const TabsScaffold(),
 /// )
 /// ```
 ///
+/// When [isAtRoot] is `false` (for example the user is on a secondary
+/// tab), back calls [onBackFromNonRoot] instead of starting the exit
+/// flow. If [onBackFromNonRoot] is `null`, back pops normally.
+///
 /// This only affects the Android back gesture/button when there's
-/// nothing left for the enclosing [Navigator] to pop — screens reached
+/// nothing left for the enclosing [Navigator] to pop - screens reached
 /// via push still pop normally and are unaffected by this widget.
 class AppExitGuard extends StatefulWidget {
   /// Creates an [AppExitGuard].
@@ -41,6 +46,10 @@ class AppExitGuard extends StatefulWidget {
     this.confirmMessage = 'Are you sure you want to exit?',
     this.doubleTapHint = 'Tap back again to exit',
     this.doubleTapWindow = const Duration(seconds: 2),
+    this.hintDuration = const Duration(seconds: 2),
+    this.hintMargin,
+    this.isAtRoot = true,
+    this.onBackFromNonRoot,
     super.key,
   });
 
@@ -62,10 +71,27 @@ class AppExitGuard extends StatefulWidget {
   /// is [AppExitBehavior.doubleTapToExit].
   final String doubleTapHint;
 
-  /// How long the user has to press back again before the "first
-  /// press" hint expires, used when [behavior] is
-  /// [AppExitBehavior.doubleTapToExit].
+  /// How long after the first press a second press still exits, used
+  /// when [behavior] is [AppExitBehavior.doubleTapToExit].
   final Duration doubleTapWindow;
+
+  /// How long the hint snackbar stays visible. Independent of
+  /// [doubleTapWindow], so a long window doesn't leave the hint on
+  /// screen for as long.
+  final Duration hintDuration;
+
+  /// Optional margin for the hint snackbar. When set, the snackbar
+  /// floats with this margin - use it to lift the hint above a
+  /// floating bottom navigation bar.
+  final EdgeInsetsGeometry? hintMargin;
+
+  /// Whether the guarded screen is the app's root screen. When `false`,
+  /// back triggers [onBackFromNonRoot] instead of the exit flow.
+  final bool isAtRoot;
+
+  /// Called when back is pressed while [isAtRoot] is `false`, typically
+  /// to navigate to the root screen.
+  final VoidCallback? onBackFromNonRoot;
 
   @override
   State<AppExitGuard> createState() => _AppExitGuardState();
@@ -76,10 +102,17 @@ class _AppExitGuardState extends State<AppExitGuard> {
 
   @override
   Widget build(BuildContext context) {
+    final letRouteHandleBack =
+        !widget.isAtRoot && widget.onBackFromNonRoot == null;
+
     return PopScope(
-      canPop: false,
+      canPop: letRouteHandleBack,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
+        if (!widget.isAtRoot) {
+          widget.onBackFromNonRoot?.call();
+          return;
+        }
         final shouldExit = await _handleBackPress(context);
         if (shouldExit) {
           await SystemNavigator.pop();
@@ -107,12 +140,15 @@ class _AppExitGuardState extends State<AppExitGuard> {
         if (withinWindow) return true;
 
         _firstBackPressAt = now;
+        final margin = widget.hintMargin;
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
               content: Text(widget.doubleTapHint),
-              duration: widget.doubleTapWindow,
+              duration: widget.hintDuration,
+              behavior: margin != null ? SnackBarBehavior.floating : null,
+              margin: margin,
             ),
           );
         return false;
